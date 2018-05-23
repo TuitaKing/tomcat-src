@@ -109,6 +109,7 @@ rem ---------------------------------------------------------------------------
 setlocal
 
 rem Suppress Terminate batch job on CTRL+C
+rem 如果带着的参数不是run 则转向mainEntry（带入的是start）
 if not ""%1"" == ""run"" goto mainEntry
 if "%TEMP%" == "" goto mainEntry
 if exist "%TEMP%\%~nx0.run" goto mainEntry
@@ -121,6 +122,16 @@ set RETVAL=%ERRORLEVEL%
 del /Q "%TEMP%\%~nx0.Y" >NUL 2>&1
 exit /B %RETVAL%
 :mainEntry
+rem 此处temp转向了环境变量的零时文件目录，~nx0指向本身运行的文件名 
+rem >NUL 表示前面命令执行抛出的异常将不显示
+rem /Q 安静模式。删除全局通配符时，不要求确认
+rem 1是标准输出
+rem 2是错误输出
+rem 和 >> 都是输出重定向符号。标准输出默认是打印到控制台，如果要导入到文件，
+rem 就需要使用>或>>。> 会覆盖已有的文件内容，而>>会附加到已有内容之后。
+rem < 和 << 是输入重定向符号。从文件中读取内容。
+rem 所以2>&1是将错误输出倒入标准输出流 https://www.cnblogs.com/coldridgeValley/p/5471421.html
+rem 下面的标签的作用就是将当前的零时目录下的run方法删除，如果有错也不提示
 del /Q "%TEMP%\%~nx0.run" >NUL 2>&1
 
 rem Guess CATALINA_HOME if not defined

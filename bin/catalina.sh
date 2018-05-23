@@ -108,6 +108,7 @@
 # -----------------------------------------------------------------------------
 
 # OS specific support.  $var _must_ be set to either true or false.
+export JPDA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=localhost:8000
 cygwin=false
 darwin=false
 os400=false
@@ -457,6 +458,7 @@ elif [ "$1" = "start" ] ; then
       -Dcatalina.base="\"$CATALINA_BASE\"" \
       -Dcatalina.home="\"$CATALINA_HOME\"" \
       -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" \
+    echo @@@@@@@@ org.apache.catalina.startup.Bootstrap "$@" start \ 
       org.apache.catalina.startup.Bootstrap "$@" start \
       >> "$CATALINA_OUT" 2>&1 "&"
 

@@ -19,7 +19,7 @@ nbproject
 output
 # Next line commented out, because test/webapp-virtual-library and
 # test/webapp-virtual-webapp use it:
-# target
+target/
 work
 build.properties
 mvn.properties
@@ -41,3 +41,4 @@ java/org/apache/catalina/startup/catalina.properties
 modules/jdbc-pool/bin
 modules/jdbc-pool/includes
 webapps/docs/jdbc-pool.xml
+*.class

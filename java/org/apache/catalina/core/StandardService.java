@@ -118,26 +118,26 @@ public class StandardService extends LifecycleMBeanBase implements Service {
         return engine;
     }
 
-
+   //service 和 container 整合
     @Override
     public void setContainer(Engine engine) {
         Engine oldEngine = this.engine;
         if (oldEngine != null) {
-            oldEngine.setService(null);
+            oldEngine.setService(null); //将service和原来存在的container解除关系
         }
         this.engine = engine;
         if (this.engine != null) {
-            this.engine.setService(this);
+            this.engine.setService(this);//将service和当前的传入的container绑定
         }
         if (getState().isAvailable()) {
             if (this.engine != null) {
                 try {
-                    this.engine.start();
+                    this.engine.start();//
                 } catch (LifecycleException e) {
                     log.warn(sm.getString("standardService.engine.startFailed"), e);
                 }
             }
-            // Restart MapperListener to pick up new engine.
+            // Restart MapperListener to pick up new engine.//重新启动MapperListener和当前的container进行绑定
             try {
                 mapperListener.stop();
             } catch (LifecycleException e) {
@@ -157,7 +157,7 @@ public class StandardService extends LifecycleMBeanBase implements Service {
             }
         }
 
-        // Report this property change to interested listeners
+        // Report this property change to interested listeners//激活监听程序
         support.firePropertyChange("container", oldEngine, this.engine);
     }
 
@@ -210,6 +210,7 @@ public class StandardService extends LifecycleMBeanBase implements Service {
      *
      * @param connector The Connector to be added
      */
+    //connector和container整合，一个container中可以有多个connector
     @Override
     public void addConnector(Connector connector) {
 
